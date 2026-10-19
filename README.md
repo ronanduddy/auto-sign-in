@@ -179,6 +179,12 @@ scripts/e2e.sh    # the real extension in headless Brave against mock pages: one
 - `BROWSER=/path/to/chromium` points either script at another Chromium-based browser.
 - `scripts/make-icons.py` regenerates `icons/` (standard library only).
 
+## Performance
+
+It only runs on the sites you add and on Google's sign-in pages; everywhere else it does nothing. On a site's pages, its page script checks whether one of that site's sign-in elements is showing, at most every 300 ms while the page is changing, and only for the elements that belong to that page's path (a step on `/login` costs nothing on a dashboard). The background worker sleeps until a page reports something new.
+
+Measured on a large page that changes ten times a second (3,000 links, buttons and panels): no measurable cost on a site's ordinary pages, and about 2 ms of script time per second (0.2% of one CPU core) when the site has a step recorded on its home page `/`, which applies to every page of the site. Each open tab of your sites does this on its own, and the browser slows the timers of tabs in the background.
+
 ## Contributing, security and licence
 
 - [CONTRIBUTING.md](CONTRIBUTING.md): running it, the tests, and the ground rules.

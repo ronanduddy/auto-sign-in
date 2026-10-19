@@ -20,14 +20,21 @@ globalThis.SAS_DOM = (() => {
   }
 
   // The first visible, enabled clickable whose whole text is one of texts (ignoring case),
-  // trying the texts in order.
+  // trying the texts in order. The text is compared first, and only the few elements it matches
+  // are checked for visibility: that check (a style lookup) is the costly part on a large page.
   function buttonWithText(clickableSelector, texts) {
-    const candidates = [...document.querySelectorAll(clickableSelector)].filter(
-      (el) => isVisible(el) && !el.disabled && el.getAttribute('aria-disabled') !== 'true',
-    );
-    for (const text of [].concat(texts)) {
-      const want = normalise(text).toLowerCase();
-      const match = candidates.find((el) => normalise(el.textContent).toLowerCase() === want);
+    const wanted = [].concat(texts).map((text) => normalise(text).toLowerCase());
+    const shortest = Math.min(...wanted.map((text) => text.length));
+    const byText = wanted.map(() => []);
+    for (const el of document.querySelectorAll(clickableSelector)) {
+      const raw = el.textContent;
+      if (raw.length < shortest) continue; // too short to be any of them, even before trimming
+      const index = wanted.indexOf(normalise(raw).toLowerCase());
+      if (index >= 0) byText[index].push(el);
+    }
+    const usable = (el) => isVisible(el) && !el.disabled && el.getAttribute('aria-disabled') !== 'true';
+    for (const matches of byText) {
+      const match = matches.find(usable);
       if (match) return match;
     }
     return null;
