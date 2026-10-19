@@ -497,7 +497,7 @@ test('the banner says a sign-in is under way, waiting for me, or how it ended, a
   };
   let r = step(emptyState(), `${DASHBOARD}/login`, LOGIN);
   equal(shown(run(r)), ['Auto sign-in: signing in to Dashboard · sign-in page…', BANNER_MS.step, false], "the site's name once");
-  equal(runBanner(run(r), sites, T0 + 500).text, 'Auto sign-in: signing in to Dashboard…', "a page that isn't the step it's on: no step named");
+  equal(runBanner(run(r), sites, T0 + 500), null, "a page that isn't a step (passed through, or clicked to before it's done): nothing");
   r = step(r.state, chooserFor(`${DASHBOARD}/login/google`), {}, { now: T0 + 1000 });
   equal(shown(run(r))[0], "Auto sign-in: signing in to Dashboard · Google's account chooser…");
   r = step(r.state, PASSWORD, {}, { now: T0 + 2000 });

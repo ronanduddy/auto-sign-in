@@ -66,8 +66,9 @@ export const BANNER_MS = Object.freeze({ step: 2_000, waiting: 60_000, signedIn:
 
 // The banner a page shows while the extension signs me in, so it's clear it's under way, from the
 // site's sign-in through Google's pages to the end: { text, hideAfterMs, hideOnInput }, or null.
-// now: when the page reported; the step is only named on the page where it happened (the run moved
-// on just then), not on one it led to that isn't a step of its own (an app's first page).
+// now: when the page reported. While a sign-in is under way, only a page where it takes a step (the
+// run moved on just then) says so; a page it merely passes through, or one you click to before
+// it's done (an app's pages, before they count as signed in), shows nothing until it ends.
 export function runBanner(run, sites, now = run?.lastStepAt) {
   if (!run) return null;
   const label = sites.label(run.site);
@@ -82,11 +83,11 @@ export function runBanner(run, sites, now = run?.lastStepAt) {
     }
     return null;
   }
+  if (run.lastStepAt !== now) return null;
   if (run.waitingForUser) {
     return { text: `Auto sign-in: signing in to ${label}, waiting for you on ${where}.`, hideAfterMs: BANNER_MS.waiting, hideOnInput: true };
   }
-  const here = run.lastStepAt === now;
-  return { text: `Auto sign-in: signing in to ${label}${here ? ` · ${step}` : ''}…`, hideAfterMs: BANNER_MS.step };
+  return { text: `Auto sign-in: signing in to ${label} · ${step}…`, hideAfterMs: BANNER_MS.step };
 }
 
 // runs: { tabId: run }. signedIn: { siteId: 'in' | 'out' } for sites with tracksSignIn, as last seen.
