@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Two-Factor Authentication | Error tracker</title>
+<h1>Two-Factor Authentication</h1>
+<label>Authenticator code <input name="otp" autocomplete="one-time-code" id="otp"></label>
+<button type="submit">Verify</button>
+<script>
+  document.getElementById('otp').addEventListener('focus', () => {
+    navigator.sendBeacon('/event', 'errors-2fa-focused');
+  });
+</script>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Auto sign-in</title>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="title">
+    <h1>Auto sign-in</h1>
+    <a href="#" data-open-options>Options</a>
+  </header>
+  <p id="status" class="status" role="status">Loading…</p>
+  <div id="recording" class="recording" hidden>
+    <p id="recording-text"></p>
+    <button id="record-here" type="button" hidden></button>
+    <button id="recording-done" type="button">Done, I'm signed in</button>
+    <button id="recording-cancel" type="button" class="secondary">Cancel recording</button>
+  </div>
+  <p id="no-email" class="warning" hidden>
+    Set your Google account email in <a href="#" data-open-options>options</a> before the next sign-in.
+  </p>
+
+  <label class="toggle"><input type="checkbox" id="enabled"> <span>On</span></label>
+  <label class="toggle">
+    <input type="checkbox" id="dryRun">
+    <span>Dry run <span class="hint">(highlight what it would click instead of clicking)</span></span>
+  </label>
+
+  <p class="quick-links" id="quick-links"></p>
+
+  <h2>Sites</h2>
+  <ul id="sites" class="sites"></ul>
+
+  <div class="sign-out">
+    <div class="sign-out-actions">
+      <button id="sign-out-all" type="button" class="secondary">Sign out of all</button>
+      <button id="record-site" type="button" class="secondary" title="Opens the options page to record a site, starting from this tab's address">Record a site</button>
+    </div>
+    <div id="sign-out-confirm" class="warning" hidden>
+      <p>This signs you out of every site above by clearing their cookies, for whole domains: all of Google (Gmail included), and all of each site's domain (every <code>example.com</code> address for <code>app.example.com</code>). Auto sign-in is switched off too, so nothing signs you straight back in.</p>
+      <button id="sign-out-yes" type="button" class="danger">Sign out</button>
+      <button id="sign-out-no" type="button" class="secondary">Cancel</button>
+    </div>
+    <p id="sign-out-done" class="hint" role="status" hidden></p>
+  </div>
+
+  <h2>Recent runs</h2>
+  <ol id="log" class="log"></ol>
+
+  <details class="trace">
+    <summary>What it saw</summary>
+    <ol id="trace" class="log"></ol>
+  </details>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Sign in to your workspace | Slack</title>
+<h1>Sign in to your workspace</h1>
+<label>Your workspace URL <input placeholder="your-workspace"> .slack.com</label>
+<button type="button">Continue</button>
+<script>
+  navigator.sendBeacon('/event', 'picker-loaded');
+</script>

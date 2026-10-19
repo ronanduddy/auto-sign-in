@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Deploys</title>
+<div id="app"></div>
+<script>
+  // Like the real Deploys UI, a single-page app: signed-out visits are routed to /login
+  // client-side, without a page load.
+  const app = document.getElementById('app');
+  if (location.pathname === '/applications') {
+    app.innerHTML = '<h1>Applications</h1>';
+    navigator.sendBeacon('/event', 'deploys-home');
+  } else {
+    setTimeout(() => {
+      history.replaceState(null, '', '/login?return_url=%2Fapplications');
+      app.innerHTML = `
+        <h1>Let's get stuff deployed!</h1>
+        <label>Username <input name="username"></label>
+        <label>Password <input name="password" type="password"></label>
+        <button type="button">Sign In</button>
+        <button type="button" class="deploys-button deploys-button--base" id="sso">LOG IN VIA GOOGLE</button>`;
+      navigator.sendBeacon('/event', 'deploys-login-shown');
+      document.getElementById('sso').addEventListener('click', () => {
+        navigator.sendBeacon('/event', 'deploys-google-clicked');
+        location.href = '/auth/login?return_url=%2Fapplications';
+      });
+    }, 300);
+  }
+</script>

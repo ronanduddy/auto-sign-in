@@ -1,0 +1,12 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Login | Error tracker</title>
+<h1>Sign in to continue</h1>
+<a href="/identity/login/google/?next=%2F" id="google"><svg width="16" height="16"></svg>Google</a>
+<a href="/identity/login/github/?next=%2F">GitHub</a>
+<script>
+  navigator.sendBeacon('/event', 'errors-login-loaded');
+  document.getElementById('google').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'errors-google-clicked');
+  });
+</script>

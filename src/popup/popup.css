@@ -1,0 +1,144 @@
+body {
+  width: 340px;
+  padding: 14px 16px;
+}
+
+.status {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.quick-links {
+  margin: 14px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.quick-links a {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.quick-links a:hover {
+  background: var(--surface);
+}
+
+.sites {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+
+.sites li {
+  padding: 2px 0;
+  break-inside: avoid;
+}
+
+.sign-out {
+  margin: 14px 0 4px;
+}
+
+.sign-out-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sign-out .warning p {
+  margin: 0 0 8px;
+  font-size: 12px;
+}
+
+.sign-out .warning button {
+  margin-right: 6px;
+}
+
+.log {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+}
+
+.log li {
+  padding: 5px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.log li:last-child {
+  border-bottom: 0;
+}
+
+.log .when {
+  color: var(--muted);
+  margin-right: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.log .mfa .outcome {
+  color: var(--good);
+}
+
+.log .error .outcome,
+.log .stalled .outcome {
+  color: var(--bad);
+}
+
+.log .detail {
+  display: block;
+  color: var(--muted);
+}
+
+.trace {
+  margin-top: 12px;
+}
+
+.trace summary {
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* The title, with the link to the options page beside it. */
+.title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.title h1 {
+  margin: 0;
+}
+
+.title a {
+  font-size: 12px;
+}
+
+/* A recording in progress (Options → Record a site). */
+.recording {
+  margin: 0 0 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+.recording p {
+  margin: 0 0 6px;
+}
+
+.recording button {
+  margin: 0 6px 0 0;
+  padding: 4px 10px;
+  font-size: 12px;
+}

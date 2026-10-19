@@ -1,0 +1,9 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Home - Dashboards - Dashboard</title>
+<h1>Dashboards</h1>
+<script>
+  // A stand-in session cookie, for the "Sign out of all" check.
+  document.cookie = 'dashboard_session=e2e; path=/; Secure; SameSite=Lax';
+  navigator.sendBeacon('/event', 'dashboard-home');
+</script>

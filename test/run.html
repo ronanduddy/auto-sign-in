@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Auto sign-in tests</title>
+<style>
+  body { font: 13px/1.5 ui-monospace, Menlo, monospace; margin: 16px; }
+</style>
+</head>
+<body>
+<pre id="results">running…</pre>
+<div id="fixture"></div>
+<!-- The content script's classic scripts, loaded the way the manifest loads them. -->
+<script src="../src/content/selectors.js"></script>
+<script src="../src/content/dom.js"></script>
+<script src="../src/content/locate.js"></script>
+<script type="module">
+  import { run } from './harness.js';
+  import './engine.test.js';
+  import './sites.test.js';
+  import './config.test.js';
+  import './site-form.test.js';
+  import './dom.test.js';
+  import './locate.test.js';
+  import './recording.test.js';
+
+  const { failed, report } = await run();
+  document.getElementById('results').textContent = report;
+  document.title = failed ? 'FAIL' : 'PASS';
+  // scripts/test-server.py is waiting for this; a plain http.server just refuses it.
+  fetch('/report', { method: 'POST', body: report }).catch(() => {});
+</script>
+</body>
+</html>

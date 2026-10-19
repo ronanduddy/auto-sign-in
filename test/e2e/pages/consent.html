@@ -1,0 +1,24 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Sign in - Google Accounts</title>
+<h1>Sign in to <span id="app">Slack</span></h1>
+<p>Google will allow the app to access this info about you.</p>
+<button type="button" id="cancel">Cancel</button>
+<button type="button" id="continue">Continue</button>
+<script>
+  const flow = new URLSearchParams(location.search).get('flow') ?? 'slack';
+  const next = {
+    slack: 'https://example.slack.com/?stage=mfa',
+    dashboard: '/signin/oauth/v2/consentsummary?flow=dashboard',
+    deploys: 'https://deploys.staging.example.test/auth/callback?code=e2e',
+    errors: 'https://errors.example.test/auth/sso/?code=e2e',
+    acme: 'https://login.acme.example.test/oauth/callback?code=e2e',
+  }[flow];
+  document.getElementById('continue').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'consent-continued');
+    location.href = next;
+  });
+  document.getElementById('cancel').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'consent-cancelled');
+  });
+</script>

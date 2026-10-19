@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Sign in - Google Accounts</title>
+<div>Sign in with Google</div>
+<h1>Choose an account</h1>
+<div>to continue to <a href="#" id="app">Slack</a></div>
+<ul>
+  <li><div role="link" tabindex="0" id="account"><div>R</div><div><div>Me Person</div><div>me@example.org</div></div></div></li>
+  <li><div role="link" tabindex="0" id="another"><div>Use another account</div></div></li>
+</ul>
+<script>
+  // ?flow= says which site's sign-in this is; Slack's flow has no flow parameter.
+  const flow = new URLSearchParams(location.search).get('flow') ?? 'slack';
+  document.getElementById('app').textContent = { google: 'Gmail', 'google-account': 'Google Account', slack: 'Slack', dashboard: 'Dashboard', deploys: 'Deploys', errors: 'Error tracker', internal: 'Internal app', acme: 'Acme' }[flow];
+  document.getElementById('account').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'account-chosen:me@example.org');
+    // Slack's flow covers Google's password page; the others have a live Google session.
+    // SAML (Internal app) has no consent page: Google goes straight back to the app.
+    location.href = {
+      google: '/v3/signin/challenge/pwd?flow=google',
+      'google-account': '/v3/signin/challenge/pwd?flow=google-account',
+      slack: '/v3/signin/challenge/pwd?TL=e2e',
+      internal: 'https://internal.example.test/portal/auth/saml/callback',
+    }[flow] ?? `/signin/oauth/id?flow=${flow}`;
+  });
+  document.getElementById('another').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'wrong-account');
+  });
+</script>

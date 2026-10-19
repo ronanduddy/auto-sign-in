@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "quickLinks": [
+    {
+      "label": "New Google Meet",
+      "url": "https://meet.google.com/new"
+    },
+    {
+      "label": "Team calendar",
+      "url": "https://calendar.google.com/"
+    }
+  ],
+  "sites": [
+    {
+      "preset": "google"
+    },
+    {
+      "preset": "slack",
+      "workspace": "acme",
+      "teamId": "T0123ABCD",
+      "labels": [
+        "work"
+      ]
+    },
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "labels": [
+        "requires VPN"
+      ],
+      "type": "button",
+      "host": "dashboard.example.com",
+      "signIn": {
+        "path": "/login",
+        "button": {
+          "texts": [
+            "Sign in with Google"
+          ]
+        }
+      }
+    },
+    {
+      "id": "errors",
+      "label": "Error tracker",
+      "type": "button",
+      "host": "errors.example.com",
+      "signIn": {
+        "path": "/auth/login",
+        "button": {
+          "selectors": [
+            "a[href*=\"/auth/google\"]"
+          ],
+          "texts": [
+            "Continue with Google"
+          ]
+        }
+      },
+      "google": {
+        "appNames": [
+          "error tracker"
+        ]
+      },
+      "handover": [
+        {
+          "path": "/auth/2fa",
+          "selectors": [
+            "input[autocomplete=\"one-time-code\"]"
+          ],
+          "waitingFor": "your 2FA code"
+        }
+      ]
+    },
+    {
+      "id": "internal-app",
+      "type": "button",
+      "label": "Internal app",
+      "labels": [
+        "staging"
+      ],
+      "host": "app.example.com",
+      "home": "https://app.example.com/portal",
+      "matches": [
+        "https://app.example.com/portal*"
+      ],
+      "signIn": {
+        "path": "/portal",
+        "button": {
+          "selectors": [
+            "form[action$=\"/auth/saml\"] button"
+          ],
+          "texts": [
+            "Sign in"
+          ]
+        },
+        "reloadIfOlderThanMinutes": 5
+      },
+      "google": {
+        "mentions": [
+          "saml2"
+        ],
+        "appNames": [
+          "internal app"
+        ]
+      },
+      "handover": [
+        {
+          "path": "/portal/mfa",
+          "selectors": [
+            "input[autocomplete=\"one-time-code\"]"
+          ],
+          "waitingFor": "your two-factor code"
+        }
+      ],
+      "notSignedIn": [
+        "/portal",
+        "/portal/auth*",
+        "/portal/mfa*"
+      ]
+    },
+    {
+      "id": "billing",
+      "type": "button",
+      "label": "Billing portal",
+      "host": "billing.example.com",
+      "steps": [
+        {
+          "path": "/",
+          "click": {
+            "texts": [
+              "Log in"
+            ]
+          }
+        },
+        {
+          "host": "login.example.com",
+          "path": "/u/login",
+          "email": {},
+          "click": {
+            "texts": [
+              "Continue"
+            ]
+          }
+        },
+        {
+          "host": "login.example.com",
+          "path": "/u/login",
+          "click": {
+            "texts": [
+              "Continue with Google"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

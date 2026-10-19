@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auto sign-in options</title>
+<link rel="stylesheet" href="../ui.css">
+<link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <h1>Auto sign-in</h1>
+
+    <form id="form" novalidate>
+      <section class="group" aria-labelledby="account-heading">
+        <h2 id="account-heading">Your Google account</h2>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" type="email" autocomplete="email" required>
+          <p class="hint">Every site signs in through Google with this account. The extension picks it on Google's account chooser, and never any other.</p>
+          <p class="error" id="email-error" hidden>Enter the email address of your Google account.</p>
+        </div>
+        <div class="subgroup">
+          <h3>Google's sign-in steps</h3>
+          <p class="hint">These come up during every site's sign-in, and when Google asks you to sign in again.</p>
+          <label class="toggle">
+            <input id="submitAutofilledPassword" type="checkbox">
+            <span>
+              <strong>Password:</strong> click Next once your password manager fills the password in
+              <span class="hint">(a typed password is left for you to submit with Enter; the extension never reads the password)</span>
+            </span>
+          </label>
+          <label class="toggle">
+            <input id="googleTwoStepAssist" type="checkbox">
+            <span>
+              <strong>2-Step Verification:</strong> tick “Don't ask again on this device”, and click Next once you've entered the 6-digit code
+              <span class="hint">(backup codes and pages without a code box are left to you)</span>
+            </span>
+          </label>
+        </div>
+        <div class="subgroup">
+          <h3>After signing in to Google</h3>
+          <label class="toggle">
+            <input id="goToGoogleLanding" type="checkbox" aria-controls="googleLandingUrl">
+            <span>
+              Go to this page instead of Google's account page
+              <span class="hint">(only when you signed in with nowhere else to go; a sign-in on its way to Gmail, Drive or anywhere else goes there)</span>
+            </span>
+          </label>
+          <div class="field nested">
+            <label for="googleLandingUrl" class="visually-hidden">Page to go to after signing in to Google</label>
+            <input id="googleLandingUrl" type="url" required>
+            <p class="error" id="google-landing-error" hidden>This needs to be an https:// address.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="group" aria-labelledby="slack-heading" id="slack-settings">
+        <h2 id="slack-heading">Slack</h2>
+        <p class="hint">Slack has its own handling, which a recording can't capture: signing you out to the workspace picker, its two-factor code, and the "Open Slack?" prompt afterwards. Leave both boxes empty if you don't use Slack. Saved with Save at the bottom.</p>
+        <div class="field">
+          <label for="slackWorkspace">Workspace</label>
+          <div class="suffixed">
+            <input id="slackWorkspace" type="text" placeholder="acme" autocomplete="off" spellcheck="false">
+            <span>.slack.com</span>
+          </div>
+        </div>
+        <div class="field">
+          <label for="slackTeamId">Team ID</label>
+          <input id="slackTeamId" type="text" placeholder="T0123ABCD" autocomplete="off" spellcheck="false">
+          <p class="hint">The T… part of the address when the workspace is open at app.slack.com. Pasting the whole address works too.</p>
+          <p class="error" id="slack-error" hidden></p>
+        </div>
+        <label class="toggle">
+          <input id="skipDesktopPrompt" type="checkbox">
+          <span>
+            Skip the “Open Slack?” desktop-app prompt
+            <span class="hint">(after your two-factor code, Slack asks to open its desktop app; this goes to Slack in the browser instead)</span>
+          </span>
+        </label>
+        <label class="toggle">
+          <input id="goToSlackLanding" type="checkbox" aria-controls="landingUrl">
+          <span>
+            Open this page instead of the workspace's default view
+            <span class="hint">(whenever Slack in the browser opens on its default view, as it does after signing in; links to a channel or message are left alone)</span>
+          </span>
+        </label>
+        <div class="field nested">
+          <label for="landingUrl" class="visually-hidden">Slack page to open instead of the default view</label>
+          <input id="landingUrl" type="url" placeholder="https://app.slack.com/client/T0123ABCD/C0123ABCD">
+          <p class="hint">A channel's address, say: open it in Slack in the browser and copy the address.</p>
+          <p class="error" id="landing-error" hidden>This needs to be an address starting <code>https://app.slack.com/client/</code>.</p>
+        </div>
+      </section>
+
+      <section class="group" aria-labelledby="sites-heading">
+        <h2 id="sites-heading">Sites <span id="sites-count" class="count" role="status"></span></h2>
+        <p class="hint">Every site is enabled unless you disable it here. Disabling a site also gives back the extension's access to it; Enable asks for it again. Each address opens the site in a new tab. Changes here save straight away.</p>
+        <div id="config-problems" class="warning" hidden>
+          <p>Some entries in your config can't be used, so they're left out until they're fixed. Record those sites again, or fix them in the config file and import it.</p>
+          <ul id="config-problem-list" class="problems"></ul>
+        </div>
+        <div id="sites"></div>
+        <div class="add-site">
+          <button id="record-site" type="button">Record a site…</button>
+        </div>
+        <p class="hint">Any site that signs in through Google can be recorded: you sign in once, and the extension notes the steps. Google itself is built in (disable it to leave Google's own sign-in alone), and Slack has its own section below.</p>
+        <div id="record-form" class="editor" hidden>
+          <h3>Record a site</h3>
+          <p class="hint">A new tab opens on the site. Sign in the way you normally do, through Google: each click on the site's own pages becomes a step, and its email box gets your Google email filled in for you. Then click <strong>Done</strong> in the bar at the bottom of the page, and check the steps here before saving. Nothing you type is recorded.</p>
+          <div class="field">
+            <label for="record-url">Address</label>
+            <input id="record-url" type="url" placeholder="https://app.example.com/" autocomplete="off">
+            <p class="hint">Where you'd go to use the site. While you're signed out, it should lead to its sign-in.</p>
+          </div>
+          <div class="field">
+            <label for="record-label">Name (optional)</label>
+            <input id="record-label" type="text" placeholder="Taken from the address" autocomplete="off">
+            <p class="hint">Left empty, it's named after the address, with its environment if it names one: app.example.com is "Example", app.staging.example.com is "Example (staging)". You can change it before saving.</p>
+          </div>
+          <label class="toggle">
+            <input id="record-follow" type="checkbox" checked>
+            <span>
+              Follow the sign-in to other sites
+              <span class="hint">(many sign-ins move to another address, such as a login domain or the app itself; this asks for access to all sites while recording, and gives it back when you finish)</span>
+            </span>
+          </label>
+          <ul id="record-problems" class="problems" hidden></ul>
+          <div class="editor-actions">
+            <button id="record-start" type="button">Start recording</button>
+            <button id="record-cancel" type="button" class="secondary">Cancel</button>
+          </div>
+        </div>
+        <div id="site-editor" class="editor" hidden>
+          <h3 id="editor-title"></h3>
+          <div id="editor-fields"></div>
+          <div id="editor-steps" hidden>
+            <div id="editor-warnings"></div>
+            <h4>Steps</h4>
+            <p class="hint">On the site's own pages, before or after Google. Each runs once per sign-in, on the page it names, when what it clicks is there.</p>
+            <ol id="editor-step-list" class="step-list"></ol>
+            <h4 id="editor-handover-heading">Hand over to you</h4>
+            <ol id="editor-handover-list" class="step-list"></ol>
+          </div>
+          <div id="editor-json-field" class="field" hidden>
+            <label for="editor-json">Site settings (JSON)</label>
+            <p id="editor-json-why" class="hint" hidden></p>
+            <textarea id="editor-json" rows="16" spellcheck="false" wrap="off"></textarea>
+            <p class="hint"><a href="../../config/example.json" target="_blank" rel="noopener noreferrer">config/example.json</a> shows every setting a site can have.</p>
+          </div>
+          <ul id="editor-problems" class="problems" hidden></ul>
+          <div class="editor-actions">
+            <button id="editor-save" type="button">Save site</button>
+            <button id="editor-cancel" type="button" class="secondary">Cancel</button>
+            <button id="editor-as-json" type="button" class="secondary">Edit as JSON</button>
+          </div>
+        </div>
+        <p id="sites-status" class="hint" role="status"></p>
+      </section>
+
+      <section class="group" aria-labelledby="quick-links-heading">
+        <h2 id="quick-links-heading">Quick links</h2>
+        <p class="hint">Shown at the top of the toolbar popup, each opening in a new tab. Saved with Save at the bottom.</p>
+        <div id="quick-links"></div>
+        <button id="add-quick-link" type="button" class="secondary small">Add a quick link</button>
+        <p class="error" id="quick-links-error" hidden>Each quick link needs a name and an https:// address.</p>
+      </section>
+
+      <div class="actions">
+        <button type="submit">Save</button>
+        <span id="saved" class="hint" role="status"></span>
+      </div>
+    </form>
+
+    <section class="group config-file" aria-labelledby="config-heading">
+      <h2 id="config-heading">Config file</h2>
+      <p class="hint">The sites and quick links above make up the config. Import a file shared with you to replace them (you see what's in it first), or export yours to share it or keep a copy.</p>
+      <div class="config-actions">
+        <label class="button secondary" for="import-file">Import config…</label>
+        <input id="import-file" type="file" accept="application/json,.json" class="visually-hidden">
+        <button id="export" type="button" class="secondary">Export config</button>
+      </div>
+      <div id="import-review" class="warning" hidden>
+        <p id="import-title"></p>
+        <ul id="import-summary"></ul>
+        <ul id="import-problems" hidden></ul>
+        <button id="import-use" type="button">Use this config</button>
+        <button id="import-cancel" type="button" class="secondary">Cancel</button>
+      </div>
+    </section>
+
+    <!-- The numbers, site names and badges below are filled in by options.js from the same constants the extension uses. -->
+    <section class="explainer" aria-labelledby="what-it-does">
+      <h2 id="what-it-does">What it does</h2>
+
+      <h3>When it starts</h3>
+      <p>When one of these sites shows its sign-in page, the extension signs you back in through Google: <span data-fact="siteList"></span>. For Slack, that's the workspace page it sends you to when it signs you out (<code>app.slack.com/workspace-signin</code>), unless it's asking about a workspace other than <span data-fact="team"></span>. It doesn't start until you're looking at the tab, so nothing sits half signed in going stale while you're away. To sign in to a site now, open it from the toolbar popup's site list.</p>
+
+      <h3>What a sign-in run does</h3>
+      <ol class="steps">
+        <li><strong>The site's own sign-in steps:</strong> clicks what you clicked when you recorded it (its Google button, say), filling in your email where you typed it. Each step happens once, on the page it was recorded on. For Slack, the workspace page first goes straight to <code data-fact="teamUrl"></code>, so there's nothing to type. If Slack's page has been open more than <span data-fact="staleMinutes"></span> minutes, the extension reloads it first so Slack's security token is fresh.</li>
+        <li><strong>Google's account chooser:</strong> clicks <span data-fact="email"></span>, never "Use another account". It does this only once the page shows the sign-in is for the site the run started on.</li>
+        <li><strong>Google password</strong> (only when Google has signed you out too): focuses the box and waits for you. With the password option above switched on, it clicks Next once your password manager fills the box in.</li>
+        <li><strong>Google's Continue and Allow pages:</strong> clicks them.</li>
+        <li><strong>The site's own code page</strong> (Slack's, and any site whose recording stopped at a code or password box): focuses the box and hands over to you. The run ends here. Sites without one are done once their normal pages have loaded.</li>
+        <li><strong>Google itself:</strong> when you land on Google's own sign-in, for example Gmail asking you to sign in again, it picks your account and handles the password the same way. It never clicks Continue or Allow there. Every other site's run goes through these Google steps anyway.</li>
+        <li><strong>After you enter Slack's code:</strong> Slack tries to open the desktop app. With "Skip the Open Slack? prompt" switched on, the tab goes to Slack in the browser instead: your chosen page if you set one, otherwise the workspace's default view.</li>
+      </ol>
+
+      <h3>How it keeps itself safe</h3>
+      <ul class="rules">
+        <li><strong>One tab, one step at a time.</strong> A run belongs to the tab it started in, and only one runs at once; a sign-in page in another tab waits its turn. Each step has to follow within <span data-fact="runMinutes"></span> minutes of the last, or <span data-fact="waitMinutes"></span> minutes while it waits for your password. If the next page never arrives, or a button it needs doesn't appear within 10 seconds, the run stops and a notification names the step.</li>
+        <li><strong>Only the run's own Google sign-in.</strong> On Google's pages it acts only during a run it started from one of these sites, and only once Google's address names that site (or the page says it's continuing to it). Signing in to Gmail or anything else is left alone.</li>
+        <li>
+          <strong>The loop guard.</strong> If something goes wrong and a site keeps sending the tab back to its sign-in page, each return would start a new run. To stop that hammering Google's sign-in, the extension allows at most <span data-fact="guardRuns"></span> automatic runs per site in <span data-fact="guardMinutes"></span> minutes. After that:
+          <ul>
+            <li>It pauses automatic sign-in for that site and shows a red <span data-badge="PROBLEM"></span> and a notification.</li>
+            <li>It resumes by itself once the oldest of those runs is <span data-fact="guardMinutes"></span> minutes old. A sign-in page that's still open then carries on by itself, as soon as you're looking at it.</li>
+            <li>A run that signs you in (or reaches MFA) resets that site's count, because that shows nothing is stuck.</li>
+            <li>Reloading the extension clears the pause.</li>
+          </ul>
+        </li>
+        <li><strong>No secrets.</strong> It never reads, stores or fills in a password or MFA code. To decide when to click Next on the password page, it looks only at how much is in the box and at the input events. The browser marks your real keystrokes as trusted, and a password manager's simulated ones aren't. A fill in one go, or keystrokes at machine speed, also count as a password manager. So a password you type is left for you to submit, and typing over a fill hands the box back to you. It clicks Next only once the box has stopped changing, and at most once per page, so a wrong password can't be resubmitted in a loop.</li>
+      </ul>
+
+      <h3>The toolbar badge</h3>
+      <dl class="badges">
+        <dt><span data-badge="RUNNING"></span></dt>
+        <dd>Signing in.</dd>
+        <dt><span data-badge="WAITING"></span></dt>
+        <dd>Waiting for your Google password.</dd>
+        <dt><span data-badge="HANDOVER"></span></dt>
+        <dd>A site's MFA code box is ready for you. Clears after <span data-fact="badgeMinutes"></span> minutes.</dd>
+        <dt><span data-badge="PROBLEM"></span></dt>
+        <dd>A run stopped, or the loop guard paused. The popup says which.</dd>
+        <dt><span data-badge="SIGNED_IN"></span></dt>
+        <dd>Signed in to Slack: the Slack client loaded and stayed loaded.</dd>
+        <dt><span data-badge="SIGNED_OUT"></span></dt>
+        <dd>Signed out of Slack: a Slack sign-in page for this workspace is open.</dd>
+      </dl>
+      <p class="hint">When no run is going on, the badge shows ✓ or ✗ for Slack. That's whatever the last Slack page you had open showed. If you close every Slack tab, it keeps the last status, because it doesn't check with Slack in the background.</p>
+      <p>The popup also has an on/off switch, a <strong>dry run</strong> mode that outlines in red what it would click instead of clicking, and a log of the last <span data-fact="logSize"></span> runs.</p>
+    </section>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

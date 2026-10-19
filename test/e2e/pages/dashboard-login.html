@@ -1,0 +1,20 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Dashboard</title>
+<h1>Welcome to Dashboard</h1>
+<div id="login"></div>
+<script>
+  navigator.sendBeacon('/event', 'dashboard-login-loaded');
+  // Dashboard renders its login form after load.
+  setTimeout(() => {
+    document.getElementById('login').innerHTML = `
+      <label>Email or username <input name="user"></label>
+      <label>Password <input name="password" type="password"></label>
+      <button type="submit">Log in</button>
+      <a href="/forgot">Forgot your password?</a>
+      <a class="css-oauth" href="login/google" id="oauth"><svg width="16" height="16"></svg>Sign in with Google</a>`;
+    document.getElementById('oauth').addEventListener('click', () => {
+      navigator.sendBeacon('/event', 'dashboard-google-clicked');
+    });
+  }, 300);
+</script>

@@ -1,0 +1,156 @@
+/* Shared by the popup and the options page. */
+:root {
+  --bg: #ffffff;
+  --surface: #f6f6f7;
+  --fg: #1d1c1d;
+  --muted: #616061;
+  --border: #dddddd;
+  --accent: #4a154b;
+  --accent-fg: #ffffff;
+  --focus: #1d6fd8;
+  --warn-bg: #fff4e5;
+  --warn-fg: #7a4a00;
+  --good: #2a7a43;
+  --bad: #b3261e;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1d21;
+    --surface: #222529;
+    --fg: #e8e8e8;
+    --muted: #a7a7a8;
+    --border: #3b3e43;
+    --accent: #d2a8d8;
+    --accent-fg: #1a1d21;
+    --focus: #6aa7ff;
+    --warn-bg: #3a2c12;
+    --warn-fg: #f5c46b;
+    --good: #74c98e;
+    --bad: #ff8a80;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 14px/1.45 system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+
+h2 {
+  margin: 16px 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+a {
+  color: var(--accent);
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+code,
+kbd {
+  font: 12px/1.4 ui-monospace, Menlo, monospace;
+  padding: 1px 4px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+button {
+  font: inherit;
+  font-weight: 600;
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  cursor: pointer;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+
+button.danger {
+  background: var(--bad);
+  color: var(--bg);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+input[type='email'],
+input[type='url'] {
+  width: 100%;
+  font: inherit;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.toggle {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 6px 0;
+}
+
+.toggle input {
+  margin-top: 3px;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.warning {
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+/* A short remark beside a site, such as "requires VPN". */
+.note {
+  margin-left: 8px;
+  padding: 0 6px;
+  border-radius: 9px;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}

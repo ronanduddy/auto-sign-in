@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Sign in | Slack</title>
+<h1>Sign in to example</h1>
+<div id="options"></div>
+<script>
+  // Slack renders the sign-in options after load, so the extension has to wait for them.
+  setTimeout(() => {
+    document.getElementById('options').innerHTML = `
+      <button class="c-button c-button--outline c-button--large c-third_party_auth c-google_login full_width"
+              id="google_login_button" data-qa="base_google_login_button" aria-label="Google" type="button">
+        <span class="c-button-loading__children"><span class="c-google_login__label"><span>Google</span></span></span>
+      </button>
+      <button type="button" data-qa="base_apple_login_button">Apple</button>
+      <button type="button">Sign in with email</button>`;
+    document.getElementById('google_login_button').addEventListener('click', () => {
+      navigator.sendBeacon('/event', 'slack-google-clicked');
+      location.href =
+        'https://accounts.google.com/v3/signin/accountchooser?redirect_uri=https%3A%2F%2Fslack.com%2Foauth%2Fgoogle&flowName=GeneralOAuthFlow';
+    });
+  }, 500);
+</script>

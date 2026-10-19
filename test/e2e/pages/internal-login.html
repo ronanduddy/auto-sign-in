@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Sign in | Internal app</title>
+<img alt="Example" src="data:,">
+<!-- A one-button form posting to the app's SAML endpoint, as Rails' button_to renders it. -->
+<form class="button_to" method="post" action="/portal/auth/saml" id="form">
+  <button class="btn btn-primary" button="true" data-method="post" type="submit">Sign in</button>
+  <input type="hidden" name="authenticity_token" value="e2e">
+</form>
+<script>
+  navigator.sendBeacon('/event', 'internal-login-loaded');
+  document.getElementById('form').addEventListener('submit', () => {
+    navigator.sendBeacon('/event', 'internal-sign-in-clicked');
+  });
+</script>

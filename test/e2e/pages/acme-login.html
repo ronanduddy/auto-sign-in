@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Log in to Acme</title>
+<!-- An identity provider's page on its own host: the email first (Continue stays disabled until
+     there is one), then, on the same page, the Google button. -->
+<form id="email-form">
+  <label for="email">Work email</label>
+  <input id="email" name="email" type="email" autocomplete="username">
+  <button type="submit" id="continue" disabled>Continue</button>
+</form>
+<div id="providers" hidden>
+  <button type="button" id="google">Continue with Google</button>
+  <button type="button">Continue with SSO</button>
+</div>
+<script>
+  navigator.sendBeacon('/event', 'acme-login-loaded');
+  const email = document.getElementById('email');
+  email.addEventListener('input', () => {
+    document.getElementById('continue').disabled = email.value.trim() === '';
+  });
+  document.getElementById('email-form').addEventListener('submit', (event) => {
+    event.preventDefault();
+    navigator.sendBeacon('/event', `acme-email:${email.value}`);
+    document.getElementById('email-form').hidden = true;
+    document.getElementById('providers').hidden = false;
+  });
+  document.getElementById('google').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'acme-google-clicked');
+    const back = encodeURIComponent('https://login.acme.example.test/oauth/callback');
+    location.href = `https://accounts.google.com/v3/signin/accountchooser?flow=acme&redirect_uri=${back}`;
+  });
+</script>

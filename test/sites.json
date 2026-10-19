@@ -1,0 +1,381 @@
+{
+  "version": 1,
+  "quickLinks": [
+    {
+      "label": "New Google Meet",
+      "url": "https://meet.google.com/new"
+    }
+  ],
+  "sites": [
+    {
+      "preset": "google"
+    },
+    {
+      "preset": "slack",
+      "workspace": "example",
+      "teamId": "T0123ABCD"
+    },
+    {
+      "id": "dashboard",
+      "label": "Dashboard",
+      "labels": [
+        "requires VPN"
+      ],
+      "type": "button",
+      "host": "dashboard.example.test",
+      "signIn": {
+        "path": "/login",
+        "button": {
+          "selectors": [
+            "a[href$=\"login/google\"]",
+            "a[href*=\"/login/google\"]"
+          ],
+          "texts": [
+            "Sign in with Google"
+          ]
+        }
+      },
+      "google": {
+        "appNames": [
+          "dashboard",
+          "example ops"
+        ]
+      }
+    },
+    {
+      "id": "dashboard-staging",
+      "label": "Dashboard (staging)",
+      "labels": [
+        "requires VPN"
+      ],
+      "type": "button",
+      "host": "dashboard.staging.example.test",
+      "signIn": {
+        "path": "/login",
+        "button": {
+          "selectors": [
+            "a[href$=\"login/google\"]",
+            "a[href*=\"/login/google\"]"
+          ],
+          "texts": [
+            "Sign in with Google"
+          ]
+        }
+      },
+      "google": {
+        "appNames": [
+          "dashboard",
+          "example ops"
+        ]
+      }
+    },
+    {
+      "id": "deploys-production",
+      "label": "Deploys (production)",
+      "labels": [
+        "requires VPN"
+      ],
+      "type": "button",
+      "host": "deploys.example.test",
+      "signIn": {
+        "path": "/login",
+        "button": {
+          "texts": [
+            "Log in via Google"
+          ]
+        }
+      },
+      "google": {
+        "appNames": [
+          "deploys",
+          "example ops"
+        ]
+      }
+    },
+    {
+      "id": "deploys-staging",
+      "label": "Deploys (staging)",
+      "labels": [
+        "requires VPN"
+      ],
+      "type": "button",
+      "host": "deploys.staging.example.test",
+      "signIn": {
+        "path": "/login",
+        "button": {
+          "texts": [
+            "Log in via Google"
+          ]
+        }
+      },
+      "google": {
+        "appNames": [
+          "deploys",
+          "example ops"
+        ]
+      }
+    },
+    {
+      "id": "errors",
+      "label": "Error tracker",
+      "type": "button",
+      "host": "errors.example.test",
+      "home": "https://errors.example.test/auth/login/",
+      "signIn": {
+        "path": "/auth/login",
+        "button": {
+          "selectors": [
+            "a[href*=\"/identity/login/google\"]",
+            "a[href*=\"provider=google\"]"
+          ],
+          "texts": [
+            "Google",
+            "Sign in with Google",
+            "Continue with Google"
+          ]
+        }
+      },
+      "google": {
+        "appNames": [
+          "errors"
+        ]
+      },
+      "handover": [
+        {
+          "path": "/auth/2fa",
+          "selectors": [
+            "input[name=\"otp\"]",
+            "input[autocomplete=\"one-time-code\"]",
+            "input[inputmode=\"numeric\"]",
+            "input[type=\"text\"]"
+          ],
+          "label": "Error tracker's 2FA code box",
+          "pageLabel": "Error tracker's 2FA page",
+          "waitingFor": "your 2FA code"
+        }
+      ],
+      "notSignedIn": [
+        "/auth/*"
+      ],
+      "reloadOnInstall": [
+        "https://errors.example.test/auth/login*"
+      ]
+    },
+    {
+      "id": "internal-local",
+      "type": "button",
+      "label": "Internal app (local)",
+      "host": "internal.test",
+      "home": "https://internal.test/portal",
+      "matches": [
+        "https://internal.test/portal*"
+      ],
+      "signIn": {
+        "path": "/portal",
+        "button": {
+          "selectors": [
+            "form[action$=\"/portal/auth/saml\"] button[type=\"submit\"]",
+            "form[action$=\"/portal/auth/saml\"] [type=\"submit\"]"
+          ]
+        },
+        "reloadIfOlderThanMinutes": 5
+      },
+      "google": {
+        "mentions": [
+          "saml2"
+        ],
+        "appNames": [
+          "internal"
+        ]
+      },
+      "handover": [
+        {
+          "path": "/portal/mfa/verify",
+          "selectors": [
+            "input[name$=\"[code]\"]",
+            "input[autocomplete=\"one-time-code\"]",
+            "input[type=\"text\"]",
+            "input[type=\"number\"]"
+          ],
+          "label": "Internal app (local)'s two-factor code box",
+          "pageLabel": "Internal app (local)'s two-factor page",
+          "waitingFor": "your two-factor code"
+        },
+        {
+          "path": "/portal/mfa/method",
+          "selectors": [
+            "input[type=\"radio\"]"
+          ],
+          "label": "Internal app (local)'s two-factor delivery choice",
+          "pageLabel": "Internal app (local)'s two-factor page",
+          "waitingFor": "you to choose how to get your two-factor code"
+        }
+      ],
+      "notSignedIn": [
+        "/portal",
+        "/portal/login*",
+        "/portal/auth*",
+        "/portal/mfa*"
+      ],
+      "reloadOnInstall": [
+        "https://internal.test/portal",
+        "https://internal.test/portal/",
+        "https://internal.test/portal/login*"
+      ]
+    },
+    {
+      "id": "internal",
+      "type": "button",
+      "label": "Internal app",
+      "host": "internal.example.test",
+      "home": "https://internal.example.test/portal",
+      "matches": [
+        "https://internal.example.test/portal*"
+      ],
+      "signIn": {
+        "path": "/portal",
+        "button": {
+          "selectors": [
+            "form[action$=\"/portal/auth/saml\"] button[type=\"submit\"]",
+            "form[action$=\"/portal/auth/saml\"] [type=\"submit\"]"
+          ]
+        },
+        "reloadIfOlderThanMinutes": 5
+      },
+      "google": {
+        "mentions": [
+          "saml2"
+        ],
+        "appNames": [
+          "internal"
+        ]
+      },
+      "handover": [
+        {
+          "path": "/portal/mfa/verify",
+          "selectors": [
+            "input[name$=\"[code]\"]",
+            "input[autocomplete=\"one-time-code\"]",
+            "input[type=\"text\"]",
+            "input[type=\"number\"]"
+          ],
+          "label": "Internal app's two-factor code box",
+          "pageLabel": "Internal app's two-factor page",
+          "waitingFor": "your two-factor code"
+        },
+        {
+          "path": "/portal/mfa/method",
+          "selectors": [
+            "input[type=\"radio\"]"
+          ],
+          "label": "Internal app's two-factor delivery choice",
+          "pageLabel": "Internal app's two-factor page",
+          "waitingFor": "you to choose how to get your two-factor code"
+        }
+      ],
+      "notSignedIn": [
+        "/portal",
+        "/portal/login*",
+        "/portal/auth*",
+        "/portal/mfa*"
+      ],
+      "reloadOnInstall": [
+        "https://internal.example.test/portal",
+        "https://internal.example.test/portal/",
+        "https://internal.example.test/portal/login*"
+      ]
+    },
+    {
+      "id": "internal-training",
+      "type": "button",
+      "label": "Internal app (training)",
+      "host": "internal-training.example.test",
+      "home": "https://internal-training.example.test/portal",
+      "matches": [
+        "https://internal-training.example.test/portal*"
+      ],
+      "signIn": {
+        "path": "/portal",
+        "button": {
+          "selectors": [
+            "form[action$=\"/portal/auth/saml\"] button[type=\"submit\"]",
+            "form[action$=\"/portal/auth/saml\"] [type=\"submit\"]"
+          ]
+        },
+        "reloadIfOlderThanMinutes": 5
+      },
+      "google": {
+        "mentions": [
+          "saml2"
+        ],
+        "appNames": [
+          "internal"
+        ]
+      },
+      "handover": [
+        {
+          "path": "/portal/mfa/verify",
+          "selectors": [
+            "input[name$=\"[code]\"]",
+            "input[autocomplete=\"one-time-code\"]",
+            "input[type=\"text\"]",
+            "input[type=\"number\"]"
+          ],
+          "label": "Internal app (training)'s two-factor code box",
+          "pageLabel": "Internal app (training)'s two-factor page",
+          "waitingFor": "your two-factor code"
+        },
+        {
+          "path": "/portal/mfa/method",
+          "selectors": [
+            "input[type=\"radio\"]"
+          ],
+          "label": "Internal app (training)'s two-factor delivery choice",
+          "pageLabel": "Internal app (training)'s two-factor page",
+          "waitingFor": "you to choose how to get your two-factor code"
+        }
+      ],
+      "notSignedIn": [
+        "/portal",
+        "/portal/login*",
+        "/portal/auth*",
+        "/portal/mfa*"
+      ],
+      "reloadOnInstall": [
+        "https://internal-training.example.test/portal",
+        "https://internal-training.example.test/portal/",
+        "https://internal-training.example.test/portal/login*"
+      ]
+    },
+    {
+      "id": "flags",
+      "label": "Feature flags",
+      "type": "button",
+      "host": "www.flags.example.test",
+      "home": "https://www.flags.example.test/signin",
+      "signIn": {
+        "path": "/signin",
+        "button": {
+          "selectors": [
+            "form[action*=\"/auth/google\"] button",
+            "form[action*=\"/auth/google\"] [type=\"submit\"]",
+            "a[href*=\"/auth/google\"]"
+          ],
+          "texts": [
+            "Sign in with Google",
+            "Continue with Google",
+            "Log in with Google"
+          ]
+        }
+      },
+      "google": {
+        "mentions": [
+          "flags.example.test"
+        ],
+        "appNames": [
+          "flags"
+        ]
+      }
+    }
+  ]
+}

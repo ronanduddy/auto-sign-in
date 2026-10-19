@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Acme</title>
+<header><a href="https://login.acme.example.test/login" id="log-in">Log in</a></header>
+<h1>Acme: the app that signs in in three steps</h1>
+<script>
+  navigator.sendBeacon('/event', 'acme-home-loaded');
+  document.getElementById('log-in').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'acme-log-in-clicked');
+  });
+</script>

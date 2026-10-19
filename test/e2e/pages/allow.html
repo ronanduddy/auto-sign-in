@@ -1,0 +1,16 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Sign in - Google Accounts</title>
+<h1>Dashboard wants access to your Google Account</h1>
+<p>This will allow Dashboard to see your email address and personal info.</p>
+<button type="button" id="cancel">Cancel</button>
+<button type="button" id="allow">Allow</button>
+<script>
+  document.getElementById('allow').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'consent-allowed');
+    location.href = 'https://dashboard.example.test/login/google?code=e2e';
+  });
+  document.getElementById('cancel').addEventListener('click', () => {
+    navigator.sendBeacon('/event', 'consent-cancelled');
+  });
+</script>

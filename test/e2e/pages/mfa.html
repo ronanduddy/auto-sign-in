@@ -1,0 +1,22 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Two-factor authentication | Slack</title>
+<h1>Enter your authentication code</h1>
+<div id="code"></div>
+<script>
+  const code = document.getElementById('code');
+  for (let i = 1; i <= 6; i += 1) {
+    code.insertAdjacentHTML(
+      'beforeend',
+      `<div class="two_factor_input_item"><input autocomplete="one-time-password" inputmode="numeric" pattern="\\d*"
+        aria-disabled="false" maxlength="1" aria-label="digit ${i} of 6" type="text" value=""></div>`,
+    );
+  }
+  code.querySelector('[aria-label="digit 1 of 6"]').addEventListener('focus', () => {
+    navigator.sendBeacon('/event', 'mfa-focused');
+    // Stands in for me typing the code; Slack then sends the tab to its desktop-app launcher.
+    setTimeout(() => {
+      location.href = 'https://example.slack.com/ssb/redirect?entry_point=workspace_signin';
+    }, 300);
+  });
+</script>

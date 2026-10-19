@@ -1,0 +1,11 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>E2E start</title>
+<p>Giving the extension a moment to load, then signing out…</p>
+<script>
+  // The sign-out landing URL, exactly as Slack sends it.
+  setTimeout(() => {
+    location.href =
+      'https://app.slack.com/workspace-signin?redir=%2Fgantry%2Fauth%3Fapp%3Dclient%26lc%3D1792095986%26return_to%3D%252Fclient%252FT0123ABCD%252FC0456EFGH%26teams%3DT0123ABCD';
+  }, 1500);
+</script>

@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Two-factor authentication | Internal app</title>
+<p>How would you like to receive your code?</p>
+<!-- A form asking how to send the code: the second of its two-factor pages. -->
+<form action="/portal/mfa/method" method="post">
+  <label><input type="radio" name="mfa[method]" value="sms" id="sms"> Text message</label>
+  <label><input type="radio" name="mfa[method]" value="email"> Email</label>
+  <button type="submit">Send code</button>
+</form>
+<script>
+  document.getElementById('sms').addEventListener('focus', () => {
+    navigator.sendBeacon('/event', 'internal-2fa-focused');
+  });
+</script>
